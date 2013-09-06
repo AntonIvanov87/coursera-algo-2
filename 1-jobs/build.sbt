@@ -1,4 +1,4 @@
-name := "1-1-jobs-non-opt"
+name := "1-jobs"
 
 version := "0.1"
 
