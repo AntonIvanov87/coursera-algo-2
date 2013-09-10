@@ -27,6 +27,18 @@ package object prim {
 
   }
 
+  private[prim] def edges2nodes(edges: Set[Edge]): Map[Int, Set[Edge]] = {
+
+      val emptyNodes: Map[Int, Set[Edge]] = Map().withDefaultValue(Set[Edge]())
+
+      def updateNodes(nodes: Map[Int, Set[Edge]], edge: Edge): Map[Int, Set[Edge]] =
+        nodes + (edge.node1 -> (nodes(edge.node1) + edge),
+          edge.node2 -> (nodes(edge.node2) + edge))
+
+      edges.foldLeft(emptyNodes)(updateNodes)
+
+  }
+
   private[prim] def edgeCrossesFront(nodesInMST: Set[Int])(edge: Edge) =
     nodesInMST.contains(edge.node1) && !nodesInMST.contains(edge.node2) ||
       nodesInMST.contains(edge.node2) && !nodesInMST.contains(edge.node1)

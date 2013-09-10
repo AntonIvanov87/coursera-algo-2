@@ -19,6 +19,21 @@ class TestPackage extends FlatSpec {
 
   }
 
+  "edges2Nodes" should "return map of nodes to edges" in {
+
+    val edge12: Edge = Edge(node1=1, node2=2, weight=1)
+    val edge13: Edge = Edge(node1=1, node2=3, weight=2)
+    val edges: Set[Edge] = Set(edge12, edge13)
+
+    val nodes = edges2nodes(edges)
+
+    expectResult(3)(nodes.size)
+    expectResult(nodes(1))(Set(edge12, edge13))
+    expectResult(nodes(2))(Set(edge12))
+    expectResult(nodes(3))(Set(edge13))
+
+  }
+
   "edgeCrossesFront" should "return true if edge crosses front" in {
 
     val edge12: Edge = Edge(node1=1, node2=2, weight=1)
