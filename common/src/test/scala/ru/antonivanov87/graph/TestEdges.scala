@@ -28,9 +28,25 @@ class TestEdges extends FlatSpec {
 
   }
 
-  "sumOfWeights" should "return 0 for empty graph" in {
+  "getNodes" should "return empty set for empty graph" in {
 
-    val actualSumOfWeights = Edges sumOfWeights Set()
+    val nodes: Set[Int] = Edges getNodes Set()
+
+    expectResult(Set())(nodes)
+
+  }
+
+  it should "return set of unique nodes" in {
+
+    val nodes: Set[Int] = Edges getNodes edges.toSet
+
+    expectResult(Set(1, 2, 499, 500))(nodes)
+
+  }
+
+  "getSumOfWeights" should "return 0 for empty graph" in {
+
+    val actualSumOfWeights = Edges getSumOfWeights Set()
 
     expectResult(0)(actualSumOfWeights)
 
@@ -41,7 +57,7 @@ class TestEdges extends FlatSpec {
     val edge2 = Edge(node1=2, node2=3, weight=2)
     val graph = Set(edge1, edge2)
 
-    val actualSumOfWeights = Edges sumOfWeights graph
+    val actualSumOfWeights = Edges getSumOfWeights graph
 
     expectResult(3)(actualSumOfWeights)
 

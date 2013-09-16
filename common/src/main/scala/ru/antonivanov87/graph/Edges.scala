@@ -4,9 +4,6 @@ import scala.io.Source
 
 object Edges {
 
-  def sumOfWeights(graph: Set[Edge]): Int =
-    graph.foldLeft[Int](0)(_ + _.weight)
-
   def fromSource(source: Source): List[Edge] = {
 
     val allLines: Iterator[String] = source.getLines()
@@ -20,5 +17,11 @@ object Edges {
     edgesIterator.toList
 
   }
+
+  def getNodes(graph: Set[Edge]): Set[Int] =
+    graph.foldLeft[Set[Int]](Set())((set, edge) => set + (edge.node1, edge.node2))
+
+  def getSumOfWeights(graph: Set[Edge]): Int =
+    graph.foldLeft[Int](0)(_ + _.weight)
 
 }

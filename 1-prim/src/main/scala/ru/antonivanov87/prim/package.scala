@@ -32,7 +32,4 @@ package object prim {
     nodesInMST.contains(edge.node1) && !nodesInMST.contains(edge.node2) ||
       nodesInMST.contains(edge.node2) && !nodesInMST.contains(edge.node1)
 
-  def sumOfEdges(graph: Set[Edge]): Int =
-    graph.foldLeft[Int](0)(_ + _.weight)
-
 }

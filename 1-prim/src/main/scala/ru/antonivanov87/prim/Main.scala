@@ -11,7 +11,7 @@ object Main {
     val source: Source = Source fromURL (getClass getResource "/edges.txt")
     val graph: Set[Edge] = Edges.fromSource(source).toSet
     val graphMST: Set[Edge] = MST(graph)
-    val primSumOfEdges: Int = sumOfEdges(graphMST)
+    val primSumOfEdges: Int = Edges.getSumOfWeights(graphMST)
     println("Prim sum of edges: " + primSumOfEdges)
 
   }

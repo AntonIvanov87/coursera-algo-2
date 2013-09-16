@@ -53,7 +53,7 @@ class TestPackage extends FlatSpec {
     val edge13: Edge = Edge(node1=1, node2=3, weight=2)
     val graph: Set[Edge] = Set(edge12, edge13)
 
-    expectResult(3)(sumOfEdges(graph))
+    expectResult(3)(Edges getSumOfWeights graph)
 
   }
 
@@ -62,7 +62,7 @@ class TestPackage extends FlatSpec {
     val source: Source = Source fromURL (getClass getResource "/edges.txt")
     val graph: Set[Edge] = Edges.fromSource(source).toSet
     val graphMST: Set[Edge] = MST(graph)
-    val primSumOfEdges: Int = sumOfEdges(graphMST)
+    val primSumOfEdges: Int = Edges getSumOfWeights graphMST
     expectResult(-3612829)(primSumOfEdges)
 
   }
