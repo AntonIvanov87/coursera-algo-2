@@ -1,4 +1,4 @@
-package ru.antonivanov87.prim
+package ru.antonivanov87.graph
 
 import org.scalatest.FlatSpec
 

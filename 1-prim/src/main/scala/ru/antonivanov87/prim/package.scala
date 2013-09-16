@@ -1,6 +1,7 @@
 package ru.antonivanov87
 
 import scala.annotation.tailrec
+import ru.antonivanov87.graph.Edge
 
 package object prim {
 

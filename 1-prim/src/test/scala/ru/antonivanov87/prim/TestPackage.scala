@@ -1,7 +1,8 @@
 package ru.antonivanov87.prim
 
-import org.scalatest.FlatSpec
 import scala.io.Source
+import org.scalatest.FlatSpec
+import ru.antonivanov87.graph.{Edges, Edge}
 
 class TestPackage extends FlatSpec {
 
@@ -59,7 +60,7 @@ class TestPackage extends FlatSpec {
   "edges.txt" should "contain MST with sum of edges -3612829" in {
 
     val source: Source = Source fromURL (getClass getResource "/edges.txt")
-    val graph: Set[Edge] = EdgesFromFile.read(source).toSet
+    val graph: Set[Edge] = Edges.fromSource(source).toSet
     val graphMST: Set[Edge] = MST(graph)
     val primSumOfEdges: Int = sumOfEdges(graphMST)
     expectResult(-3612829)(primSumOfEdges)
