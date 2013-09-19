@@ -1,6 +1,6 @@
 package ru.antonivanov87
 
-import ru.antonivanov87.graph.{Edges, Edge}
+import ru.antonivanov87.graph.{UnionFind, Edges, Edge}
 import scala.annotation.tailrec
 
 package object clustering {
