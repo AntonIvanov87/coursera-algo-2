@@ -1,4 +1,4 @@
-name := "1-prim"
+name := "4-apsp"
 
 version := "0.1"
 
