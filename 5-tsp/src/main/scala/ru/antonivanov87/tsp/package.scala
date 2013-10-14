@@ -3,7 +3,7 @@ package ru.antonivanov87
 import ru.antonivanov87.points.Point
 import scala.annotation.tailrec
 import scala.compat.Platform
-import scala.collection.immutable.{HashMap}
+import scala.collection.immutable.HashMap
 
 package object tsp {
 
@@ -20,21 +20,24 @@ package object tsp {
 
   }
 
-  private[tsp] def initMap(numOfPoints: Int): Map[Vector[Boolean], Map[Int, Double]] =
+  private[tsp] def initMap(numOfPoints: Int): Map[Vector[Boolean], Vector[Double]] =
     HashMap(
-      (for(i <- 0 until numOfPoints) yield if (i==0) true else false).toVector -> HashMap(0 -> 0.0)
+      (for(i <- 0 until numOfPoints) yield if (i==0) true else false).toVector ->
+        (for(i <- 0 until numOfPoints) yield if (i==0) 0.0 else Double.MaxValue).toVector
     )
 
   @tailrec
   private[tsp] def incSetsSizes(points: Vector[Point],
-                                prevMap: Map[Vector[Boolean], Map[Int, Double]]
-                                 ): Map[Vector[Boolean], Map[Int, Double]] = {
+                                prevMap: Map[Vector[Boolean], Vector[Double]]
+                                 ): Map[Vector[Boolean], Vector[Double]] = {
 
-    def getInnerMap(set: Vector[Boolean]): Map[Int, Double] = {
+    def getInnerMap(set: Vector[Boolean]): Vector[Double] = {
 
-      (for (destPointIndex <- 1 until set.size if set(destPointIndex)) yield {
-        val setWithoutDest = set updated (destPointIndex, false)
-        val minDistance =
+      (for (destPointIndex <- 0 until set.size) yield {
+
+        if (set(destPointIndex)) {
+          val setWithoutDest = set updated (destPointIndex, false)
+
           (for (interPointIndex <- 0 until setWithoutDest.size if setWithoutDest(interPointIndex)) yield {
 
             val from0ToInter = prevMap(setWithoutDest)(interPointIndex)
@@ -46,9 +49,13 @@ package object tsp {
             }
 
           }).min
-        (destPointIndex, minDistance)
 
-      }).toMap.withDefaultValue(Double.MaxValue)
+        } else {
+          0.0
+
+        }
+
+      }).toVector
 
     }
 
