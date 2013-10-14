@@ -3,39 +3,39 @@ package ru.antonivanov87
 import ru.antonivanov87.points.Point
 import scala.annotation.tailrec
 import scala.compat.Platform
-import scala.collection.immutable.{HashSet, HashMap}
+import scala.collection.immutable.{HashMap}
 
 package object tsp {
 
   def getMinLength(points: Vector[Point]): Double = {
 
-    val almostResult = incSetsSizes(points, initMap)
+    val almostResult = incSetsSizes(points, initMap(points.size))
 
     val finalSet = almostResult.keys.head
     val innerMap = almostResult.values.head
-    (for (interPointIndex <- finalSet if interPointIndex != 0) yield {
+    (for (interPointIndex <- 1 until finalSet.size) yield {
       val fromInterToDest = points(interPointIndex) distanceTo points(0)
       innerMap(interPointIndex) + fromInterToDest
     }).min
 
   }
 
-  private[tsp] val initMap: Map[Set[Int], Map[Int, Double]] =
+  private[tsp] def initMap(numOfPoints: Int): Map[Vector[Boolean], Map[Int, Double]] =
     HashMap(
-      HashSet(0) -> HashMap(0 -> 0.0)
+      (for(i <- 0 until numOfPoints) yield if (i==0) true else false).toVector -> HashMap(0 -> 0.0)
     )
 
   @tailrec
   private[tsp] def incSetsSizes(points: Vector[Point],
-                                prevMap: Map[Set[Int], Map[Int, Double]]
-                                 ): Map[Set[Int], Map[Int, Double]] = {
+                                prevMap: Map[Vector[Boolean], Map[Int, Double]]
+                                 ): Map[Vector[Boolean], Map[Int, Double]] = {
 
-    def getInnerMap(set: Set[Int]): Map[Int, Double] = {
+    def getInnerMap(set: Vector[Boolean]): Map[Int, Double] = {
 
-      (for (destPointIndex <- set if destPointIndex != 0) yield {
-        val setWithoutDest = set - destPointIndex
+      (for (destPointIndex <- 1 until set.size if set(destPointIndex)) yield {
+        val setWithoutDest = set updated (destPointIndex, false)
         val minDistance =
-          (for (interPointIndex <- setWithoutDest) yield {
+          (for (interPointIndex <- 0 until setWithoutDest.size if setWithoutDest(interPointIndex)) yield {
 
             val from0ToInter = prevMap(setWithoutDest)(interPointIndex)
             if (from0ToInter == Double.MaxValue) {
@@ -52,7 +52,7 @@ package object tsp {
 
     }
 
-    val prevSetSize = prevMap.keys.head.size
+    val prevSetSize = prevMap.keys.head.foldLeft[Int](0)((sum, value) => if (value) sum+1 else sum)
     if (prevSetSize == points.size) {
       prevMap
 
@@ -76,11 +76,11 @@ package object tsp {
 
   }
 
-  private[tsp] def getSetsOfNextSize(prevSets: Set[Set[Int]], numOfPoints: Int): Set[Set[Int]] = {
+  private[tsp] def getSetsOfNextSize(prevSets: Set[Vector[Boolean]], numOfPoints: Int): Set[Vector[Boolean]] = {
 
     (for (pointIndex <- 1 until numOfPoints) yield
-      for (set <- prevSets if !set.contains(pointIndex)) yield
-        set + pointIndex
+      for (set <- prevSets if !set(pointIndex)) yield
+        set updated (pointIndex, true)
       ).flatten.toSet
 
   }
