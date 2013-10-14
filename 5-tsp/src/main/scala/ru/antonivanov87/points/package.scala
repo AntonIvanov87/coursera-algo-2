@@ -4,7 +4,7 @@ import scala.io.Source
 
 package object points {
 
-  def pointsFromSource(source: Source): Vector[Point] = {
+  def fromSource(source: Source): Vector[Point] = {
 
     val allLines: Iterator[String] = source.getLines()
     val pointsLines: Iterator[String] = allLines drop 1

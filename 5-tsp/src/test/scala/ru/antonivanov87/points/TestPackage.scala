@@ -5,11 +5,11 @@ import scala.io.Source
 
 class TestPackage extends FlatSpec {
 
-  val points: Vector[Point] = pointsFromSource(
+  val points: Vector[Point] = fromSource(
     Source fromURL (getClass getResource "/tsp.txt")
   )
 
-  "fromFile" should "read 25 points" in {
+  "fromSource" should "read 25 points" in {
 
     assertResult(25)(points.size)
 
